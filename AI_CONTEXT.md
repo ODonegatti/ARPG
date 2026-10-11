@@ -89,3 +89,57 @@ Ao finalizar um card ou conjunto de cards que formam uma entrega, o Alfred deve 
 - **Resumo das Alterações:** Lista técnica de arquivos criados/modificados e suas funções.
 - **Como Testar (DoD / Acceptance Criteria):** Roteiro claro para validar a funcionalidade.
 - **Lição Arquitetural do PR:** Resumo didático do conceito de engenharia aplicado nessa PR.
+
+# CONTEXTO TEMPORAL E ESTADO ATUAL DO PROJETO
+- **Data de Início do Projeto:** 05 de Outubro de 2026.
+- **Sprint Atual:** **Sprint 2 - Sistema de Combate Corpo a Corpo & Hitboxes**
+- **Objetivo da Sprint 2:** Implementar o sistema de ataque básico em direções, configuração de áreas de dano (`Area2D`), detecção de acertos (Hitboxes/Hurtboxes) e a primeira iteração do sistema de vida dos alvos de teste.
+
+---
+
+# BACKLOG DA SPRINT 1 (CONCLUÍDA)
+*(Cards de #1 a #10 executados na semana de 05/10 a 09/10: Fundação, Input Map, CharacterBody2D, Movimentação 2D, TileMap, Colisões e AnimationTree).*
+
+---
+
+# BACKLOG DA SPRINT 2 (CARDS DO TRELLO)
+
+### **Segunda-feira (12/10)**
+- **Card 1:** `[Dev] #11 - Configuração do Input Map de Ataque e Ações`
+  - *Critérios:* Mapeamento da tecla de ataque básico (`J` ou botão esquerdo do mouse) no Input Map da Godot; preparação da lógica de cooldown de ataque no script do Player.
+  - *Tempo:* Segunda, 13:20 – 14:20 (1h)
+- **Card 2:** `[Dev] #12 - Estrutura de Cena da Hitbox do Espadachim (Area2D)`
+  - *Critérios:* Criação de um nó `Area2D` acoplado ao Player com `CollisionShape2D` posicionado na frente da última direção movimentada; camadas de colisão (Layers/Masks) configuradas.
+  - *Tempo:* Segunda, 14:20 – 15:30 (1h 10m)
+
+### **Terça-feira (13/10)**
+- **Card 3:** `[Dev] #13 - Animação de Ataque Direcional (AnimationTree)`
+  - *Critérios:* Criação das animações de golpe básico para as direções principais; integração e transição de estado de ataque no `AnimationTree` sem travar o movimento base se necessário.
+  - *Tempo:* Terça, 13:20 – 14:15 (55m)
+- **Card 4:** `[Dev] #14 - Sincronização de Frame de Ativação da Hitbox`
+  - *Critérios:* Script GDScript e sinais do `AnimationPlayer` para ligar e desligar a propriedade `monitoring` da Hitbox apenas nos frames ativos do golpe.
+  - *Tempo:* Terça, 14:15 – 15:30 (1h 15m)
+
+### **Quarta-feira (14/10)**
+- **Card 5:** `[Dev] #15 - Criação da Cena Base do Inimigo/Alvo (Dummy)`
+  - *Critérios:* Criação da cena `Dummy.tscn` (`CharacterBody2D` simples) com sprite estático e sombra básica para testes de dano.
+  - *Tempo:* Quarta, 13:20 – 14:20 (1h)
+- **Card 6:** `[Dev] #16 - Implementação da Hurtbox no Inimigo`
+  - *Critérios:* Adição de um nó `Area2D` (Hurtbox) no Dummy configurado para escutar as camadas de colisão da Hitbox do Player.
+  - *Tempo:* Quarta, 14:20 – 15:30 (1h 10m)
+
+### **Quinta-feira (15/10)**
+- **Card 7:** `[Dev] #17 - Sistema de Tomada de Dano e Vida (HP Component)`
+  - *Critérios:* Variável de vida (`hp`) encapsulada no script do Dummy; criação da função `receber_dano(valor)` conectada ao sinal `area_entered` da Hurtbox.
+  - *Tempo:* Quinta, 13:20 – 14:20 (1h)
+- **Card 8:** `[Dev] #18 - Feedback Visual de Dano (Knockback Simples & Flash)`
+  - *Critérios:* Pequeno impulso físico (`move_and_slide` com vetor oposto) no Dummy ao sofrer dano e efeito visual básico (piscar o sprite em branco ou vermelho).
+  - *Tempo:* Quinta, 14:20 – 15:30 (1h 10m)
+
+### **Sexta-feira (16/10)**
+- **Card 9:** `[Dev] #19 - Condição de Destruição do Alvo (Queue_Free)`
+  - *Critérios:* Lógica de morte no script do Dummy que verifica quando `hp <= 0` e executa a remoção segura da cena (`queue_free()`).
+  - *Tempo:* Sexta, 13:20 – 14:20 (1h)
+- **Card 10:** `[Dev] #20 - Revisão, Depuração e Fechamento da Sprint 2`
+  - *Critérios:* Teste integrado de combate (aproximar, bater, causar dano, verificar knockback e destruição do alvo); commit final limpo no Git.
+  - *Tempo:* Sexta, 14:20 – 15:30 (1h 10m)
