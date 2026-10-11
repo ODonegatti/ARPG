@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bxdj22flbldtu"]
 
 [ext_resource type="Script" uid="uid://di3mead4avpuc" path="res://scripts/player.gd" id="1_08t41"]
-[ext_resource type="Script" uid="uid://b35ilgxjqyrhf" path="res://scenes/entities/player_sprite.gd" id="2_08t41"]
+[ext_resource type="Script" uid="uid://b35ilgxjqyrhf" path="res://scripts/player_sprite.gd" id="2_08t41"]
 [ext_resource type="Texture2D" uid="uid://disxo2kdw00gx" path="res://assets/FREE_Adventurer 2D Pixel Art/Sprites/IDLE/idle_down.png" id="3_dnykm"]
 [ext_resource type="Texture2D" uid="uid://bedfooj20u7o1" path="res://assets/FREE_Adventurer 2D Pixel Art/Sprites/IDLE/idle_up.png" id="4_c5rqy"]
 [ext_resource type="Texture2D" uid="uid://dquu8o2go213p" path="res://assets/FREE_Adventurer 2D Pixel Art/Sprites/IDLE/idle_right.png" id="5_b6tgf"]
@@ -81,8 +81,6 @@ scale = Vector2(0.5, 0.5)
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1371866062]
 texture_filter = 1
 scale = Vector2(2.3, 2.3)
-
-
 texture = ExtResource("3_dnykm")
 hframes = 8
 script = ExtResource("2_08t41")
