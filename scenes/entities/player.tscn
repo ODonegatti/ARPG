@@ -1,22 +1,97 @@
 [gd_scene format=3 uid="uid://bxdj22flbldtu"]
 
 [ext_resource type="Script" uid="uid://di3mead4avpuc" path="res://scripts/player.gd" id="1_08t41"]
-[ext_resource type="Texture2D" uid="uid://qk5mej82h2yb" path="res://assets/sprites/playerplaceholder.png" id="2_1ie0h"]
+[ext_resource type="Script" uid="uid://b35ilgxjqyrhf" path="res://scenes/entities/player_sprite.gd" id="2_08t41"]
+[ext_resource type="Texture2D" uid="uid://disxo2kdw00gx" path="res://assets/FREE_Adventurer 2D Pixel Art/Sprites/IDLE/idle_down.png" id="3_dnykm"]
+[ext_resource type="Texture2D" uid="uid://bedfooj20u7o1" path="res://assets/FREE_Adventurer 2D Pixel Art/Sprites/IDLE/idle_up.png" id="4_c5rqy"]
+[ext_resource type="Texture2D" uid="uid://dquu8o2go213p" path="res://assets/FREE_Adventurer 2D Pixel Art/Sprites/IDLE/idle_right.png" id="5_b6tgf"]
+[ext_resource type="Texture2D" uid="uid://c6wcg5616y15e" path="res://assets/FREE_Adventurer 2D Pixel Art/Sprites/RUN/run_down.png" id="6_73kkf"]
+[ext_resource type="Texture2D" uid="uid://bhjwlhceeal7c" path="res://assets/FREE_Adventurer 2D Pixel Art/Sprites/RUN/run_up.png" id="7_n5sgd"]
+[ext_resource type="Texture2D" uid="uid://dlvaq11uqw0av" path="res://assets/FREE_Adventurer 2D Pixel Art/Sprites/RUN/run_right.png" id="8_5ki56"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5ohk3"]
-radius = 49.0
-height = 130.0
+radius = 28.0
+height = 84.0
+
+[sub_resource type="Animation" id="Animation_1ie0h"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_42nxq"]
+resource_name = "idle_down"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7]
+}
+
+[sub_resource type="Animation" id="Animation_dnykm"]
+resource_name = "idle_down"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5u6hq"]
+_data = {
+&"RESET": SubResource("Animation_1ie0h"),
+&"idle": SubResource("Animation_42nxq"),
+&"walk": SubResource("Animation_dnykm")
+}
 
 [node name="Player" type="CharacterBody2D" unique_id=773974509]
+scale = Vector2(0.5, 0.5)
 script = ExtResource("1_08t41")
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2107020542]
 shape = SubResource("CapsuleShape2D_5ohk3")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1084780732]
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("2_1ie0h")
-
 [node name="Camera2D" type="Camera2D" parent="." unique_id=2100328836]
+scale = Vector2(0.5, 0.5)
 position_smoothing_enabled = true
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1371866062]
+scale = Vector2(2.3, 2.3)
+
+texture = ExtResource("3_dnykm")
+hframes = 8
+script = ExtResource("2_08t41")
+idle_down = ExtResource("3_dnykm")
+idle_up = ExtResource("4_c5rqy")
+idle_side = ExtResource("5_b6tgf")
+walk_down = ExtResource("6_73kkf")
+walk_up = ExtResource("7_n5sgd")
+walk_side = ExtResource("8_5ki56")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=571310336]
+libraries/ = SubResource("AnimationLibrary_5u6hq")
+autoplay = &"idle"
