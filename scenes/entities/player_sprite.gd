@@ -29,7 +29,8 @@ func update_texture(direction: Vector2, anim_state: String) -> void:
 			if anim_state == "idle": selected_texture = idle_up
 			elif anim_state == "walk": selected_texture = walk_up
 			
-	# Aplica a textura apenas se ela estiver preenchida no Inspetor
-	if selected_texture != null:
+	# Aplica a textura apenas se ela estiver preenchida no Inspetor e for diferente da atual
+	if selected_texture != null and texture != selected_texture:
 		texture = selected_texture
+
 
