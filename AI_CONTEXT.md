@@ -66,3 +66,20 @@ Para manter o histórico do repositório limpo e legível, siga rigorosamente a 
 - `feat(player): implementa movimentação direcional com vector2 normalizado`
 - `fix(world): ajusta colisão estática no TileMapLayer de teste`
 - `chore(core): inicializa estrutura de pastas do projeto na godot`
+
+Diretrizes para Geração de Documentação de Game Dev (Tutorial do Repositório)
+Esta seção instrui a IA sobre como criar documentações técnicas e didáticas para cada componente, cena e script do repositório, transformando-o em um guia de aprendizado passo a passo para futuros desenvolvedores.
+
+Foco Didático e Conceitual: Relacione sempre os conceitos específicos da Godot (como nós, sinais e propriedades) aos fundamentos de Programação Orientada a Objetos (POO) e lógica, facilitando a absorção para quem tem base técnica em linguagens como Python ou Java.
+
+Estrutura Padrão de Cada Documentação (.md por módulo/script):
+
+# Objetivo do Módulo: O que este trecho de código ou cena resolve no contexto do ARPG.
+
+## Conceitos Chave Utilizados: Breve resumo das classes e funções nativas da Godot aplicadas (ex: CharacterBody2D, Input.get_vector(), move_and_slide()).
+
+## Passo a Passo de Implementação: Como estruturar a cena na árvore de nós e configurar propriedades no Inspetor.
+
+## Análise do Código (GDScript): Explicação comentada e detalhada dos blocos lógicos mais importantes, destacando boas práticas de encapsulamento e organização.
+
+Tom e Estilo: Linguagem técnica, direta e acessível em Português (PT-BR), evitando rodeios e focando no "porquê" das decisões arquiteturais tomadas no desenvolvimento solo.
