@@ -24,7 +24,7 @@ O módulo do **Player** é responsável por fornecer a entidade jogável em pers
 Player (CharacterBody2D) [script: res://scripts/player.gd]
 ├── CollisionShape2D (CapsuleShape2D)
 ├── Camera2D
-├── Sprite2D (PlayerSprite) [script: res://scenes/entities/player_sprite.gd]
+├── Sprite2D (PlayerSprite) [script: res://scripts/player_sprite.gd]
 └── AnimationPlayer
 ```
 
