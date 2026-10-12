@@ -27,12 +27,22 @@ signal attack_started(direction: Vector2)
 @onready var sprite: PlayerSprite = $Sprite2D
 ## Referência ao AnimationPlayer responsável pelas trilhas de animação.
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
+## Referência ao pivô direcional da área de ataque do jogador.
+@onready var hitbox_pivot: Marker2D = $HitboxPivot
+## Referência ao componente Hitbox acoplado ao pivô.
+@onready var hitbox: Hitbox = $HitboxPivot/Hitbox
 
 ## Armazena o último vetor direcional válido para orientar o sprite em estado Idle e o ataque.
 var last_direction: Vector2 = Vector2.DOWN
 
 ## Temporizador interno para controle de cadência do ataque.
 var _attack_cooldown_timer: float = 0.0
+
+
+func _ready() -> void:
+	if hitbox != null:
+		hitbox.source = self
+	update_hitbox_direction(last_direction)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -74,6 +84,7 @@ func calculate_velocity(direction: Vector2) -> Vector2:
 func update_animation(direction: Vector2) -> void:
 	if direction != Vector2.ZERO:
 		last_direction = direction
+		update_hitbox_direction(direction)
 		animation_player.play("walk")
 		sprite.update_texture(direction, "walk")
 	else:
@@ -81,11 +92,18 @@ func update_animation(direction: Vector2) -> void:
 		sprite.update_texture(last_direction, "idle")
 
 
+## Atualiza a orientação angular do pivô da hitbox com base no vetor direcional informado.
+func update_hitbox_direction(direction: Vector2) -> void:
+	if direction != Vector2.ZERO and hitbox_pivot != null:
+		hitbox_pivot.rotation = direction.angle()
+
+
 ## Executa o ataque básico do jogador caso esteja apto (respeitando can_attack e o cooldown).
 func attack() -> void:
 	if not can_attack or _attack_cooldown_timer > 0.0:
 		return
 	
+	update_hitbox_direction(last_direction)
 	_attack_cooldown_timer = attack_cooldown
 	attack_started.emit(last_direction)
 
