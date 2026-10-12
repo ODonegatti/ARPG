@@ -25,12 +25,16 @@ Player (CharacterBody2D) [script: res://scripts/player.gd]
 ├── CollisionShape2D (CapsuleShape2D)
 ├── Camera2D
 ├── Sprite2D (PlayerSprite) [script: res://scripts/player_sprite.gd]
-└── AnimationPlayer
+├── AnimationPlayer
+└── HitboxPivot (Marker2D)
+    └── Hitbox (Area2D) [script: res://scripts/hitbox.gd]
+        └── CollisionShape2D (RectangleShape2D)
 ```
 
 ### 2. Configurações no Inspetor
 1. **Player (`CharacterBody2D`)**:
    - `Scale`: `(0.5, 0.5)` para ajuste de escala relativa ao grid do mundo.
+   - `Collision Layer`: `2` (`Player`), `Collision Mask`: `3` (`World` + `Player`).
    - `Speed`: `200.0 px/s` (campo exposto na aba *Movement Settings*).
 2. **CollisionShape2D**:
    - `Shape`: `CapsuleShape2D` (Raio: `28`, Altura: `84`) cobrindo a base do personagem para colisões de chão.
@@ -40,6 +44,13 @@ Player (CharacterBody2D) [script: res://scripts/player.gd]
    - Spritesheets atribuídas nos slots exportados (`idle_down`, `idle_up`, `idle_side`, `run_down`, etc.).
 4. **AnimationPlayer**:
    - Trilhas de animação configuradas: `RESET`, `idle` (loop) e `walk` (loop), modulando a propriedade `Sprite2D:frame` de 0 a 7.
+5. **HitboxPivot (`Marker2D`)**:
+   - Pivô direcional que rotaciona dinamicamente (`rotation = direction.angle()`) acompanhando a última direção do jogador (`last_direction`).
+6. **Hitbox (`Area2D` - `Hitbox.gd`)**:
+   - `Collision Layer`: `4` (`PlayerHitbox`, valor 8).
+   - `Collision Mask`: `3` (`Enemies`, valor 4).
+   - `damage`: `10`, `knockback_force`: `120.0`.
+   - `CollisionShape2D`: Inicia desativado (`disabled = true`) com offset frontal `(44, 0)`. Métodos `activate()` e `deactivate()` gerenciam o ciclo de golpe.
 
 ---
 

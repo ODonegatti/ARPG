@@ -2,6 +2,7 @@
 .godot/
 /android/
 
-# OS specific files
+# OS and IDE specific files
 .DS_Store
 Thumbs.db
+.vscode/

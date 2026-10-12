@@ -105,10 +105,10 @@ Ao finalizar um card ou conjunto de cards que formam uma entrega, o Alfred deve 
 # BACKLOG DA SPRINT 2 (CARDS DO TRELLO)
 
 ### **Segunda-feira (12/10)**
-- **Card 1:** `[Dev] #11 - Configuração do Input Map de Ataque e Ações`
+- **Card 1:** `[Dev] #11 - Configuração do Input Map de Ataque e Ações` - **[CONCLUÍDO]**
   - *Critérios:* Mapeamento da tecla de ataque básico (`J` ou botão esquerdo do mouse) no Input Map da Godot; preparação da lógica de cooldown de ataque no script do Player.
   - *Tempo:* Segunda, 13:20 – 14:20 (1h)
-- **Card 2:** `[Dev] #12 - Estrutura de Cena da Hitbox do Espadachim (Area2D)`
+- **Card 2:** `[Dev] #12 - Estrutura de Cena da Hitbox do Espadachim (Area2D)` - **[CONCLUÍDO]**
   - *Critérios:* Criação de um nó `Area2D` acoplado ao Player com `CollisionShape2D` posicionado na frente da última direção movimentada; camadas de colisão (Layers/Masks) configuradas.
   - *Tempo:* Segunda, 14:20 – 15:30 (1h 10m)
 
