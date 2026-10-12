@@ -73,12 +73,16 @@ func get_input_direction() -> Vector2:
 ```
 *Por que foi feito assim:* Centraliza a consulta ao sistema de entrada da engine. O uso de `.normalized()` garante que o deslocamento nas diagonais mantenha magnitude 1.0.
 
-### 3. Cálculo de Velocidade Pura
+### 3. Cálculo de Velocidade e Impulso Frontal (*Lunge*)
 ```gdscript
 func calculate_velocity(direction: Vector2) -> Vector2:
+	if not can_move:
+		return Vector2.ZERO
+	if is_attacking:
+		return last_direction * attack_lunge_speed
 	return direction * speed
 ```
-*Por que foi feito assim:* Função pura e previsível: dado um vetor direcional e a velocidade escalar configurada via `@export`, calcula a velocidade do corpo sem efeitos colaterais.
+*Por que foi feito assim:* Durante a locomoção padrão, calcula a velocidade escalar no vetor direcional. Durante o ataque, substitui a movimentação livre por um impulso frontal controlado (*lunge*) na direção do golpe (`last_direction * attack_lunge_speed`, padrão consagrado de ARPGs como *Minecraft Dungeons*). Isso elimina o estranhamento visual de deslizar lateralmente ou de costas no meio do golpe, conferindo peso e impacto à espada.
 
 ### 4. Controle de Animação e Orientação
 ```gdscript

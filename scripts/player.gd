@@ -23,6 +23,8 @@ signal attack_started(direction: Vector2)
 @export_group("Combat Settings")
 ## Tempo de espera mínimo entre ataques consecutivos (cooldown em segundos).
 @export var attack_cooldown: float = 0.4
+## Velocidade do impulso frontal (passo à frente / lunge) durante o golpe, estilo Minecraft Dungeons.
+@export var attack_lunge_speed: float = 70.0
 
 @export_group("Dependencies")
 ## Referência ao componente visual de gerenciamento de sprites e direções.
@@ -77,10 +79,13 @@ func get_input_direction() -> Vector2:
 
 
 ## Calcula a velocidade linear do corpo físico aplicando a velocidade escalar ao vetor unitário de direção.
-## Retorna Vector2.ZERO caso can_move esteja falso.
+## Durante o ataque, substitui o movimento livre por um impulso frontal (lunge) na direção do golpe,
+## eliminando deslizes laterais ou incongruências visuais (estilo Minecraft Dungeons).
 func calculate_velocity(direction: Vector2) -> Vector2:
 	if not can_move:
 		return Vector2.ZERO
+	if is_attacking:
+		return last_direction * attack_lunge_speed
 	return direction * speed
 
 
