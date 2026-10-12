@@ -87,14 +87,24 @@ func _run_tests() -> void:
 	assert(second_tracker.emitted == false, "Novo ataque não deve ser disparado enquanto is_attacking for true.")
 	print("[PASS] 5. Prevenção de reentrância durante ataque ativa e funcional.")
 	
-	# 6. Validação de movimentação simultânea sem travamento físico
-	var move_vel: Vector2 = player.calculate_velocity(Vector2.RIGHT)
-	assert(is_equal_approx(move_vel.length(), player.speed), "O jogador pode se mover durante o ataque sem travamento físico indesejado.")
-	print("[PASS] 6. Física de movimentação simultânea validada.")
+	# 6. Validação do impulso frontal rápido (lunge) e frenagem de curta distância
+	# Durante o ataque virado para RIGHT, a velocidade inicial deve ser last_direction * attack_lunge_speed,
+	# e após uma fração de segundo (~0.1s), a fricção deve estancar o movimento no chão (Vector2.ZERO).
+	var attack_vel: Vector2 = player.calculate_velocity(Vector2.LEFT) # Tentativa de input oposto
+	assert(attack_vel == Vector2.RIGHT * player.attack_lunge_speed, "Velocidade inicial de ataque deve ser o impulso rápido para frente.")
+	assert(is_equal_approx(attack_vel.length(), player.attack_lunge_speed), "Magnitude inicial deve ser attack_lunge_speed.")
 	
-	# 7. Validação do término da animação e restauração de estado
+	# Simula a desaceleração (frenagem rápida)
+	player.update_timers(0.12)
+	var stopped_vel: Vector2 = player.calculate_velocity(Vector2.LEFT)
+	assert(stopped_vel == Vector2.ZERO, "O impulso deve frear bruscamente até zero antes do fim da animação, evitando deslocamento longo.")
+	print("[PASS] 6. Impulso rápido inicial e frenagem estanque em curta distância validados.")
+	
+	# 7. Validação do término da animação e restauração de estado e velocidade normal
 	player._on_animation_player_animation_finished(&"attack")
 	assert(player.is_attacking == false, "is_attacking deve retornar para false ao concluir a animação.")
+	var normal_vel: Vector2 = player.calculate_velocity(Vector2.RIGHT)
+	assert(is_equal_approx(normal_vel.length(), player.speed), "Velocidade total de locomoção (200.0 px/s) deve ser restaurada após o ataque.")
 	print("[PASS] 7. Conclusão da animação e restauração automática do estado de locomoção validados.")
 	
 	print("==========================================================")
