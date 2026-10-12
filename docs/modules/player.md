@@ -83,6 +83,9 @@ func calculate_velocity(direction: Vector2) -> Vector2:
 ### 4. Controle de Animação e Orientação
 ```gdscript
 func update_animation(direction: Vector2) -> void:
+	if is_attacking:
+		return
+
 	if direction != Vector2.ZERO:
 		last_direction = direction
 		animation_player.play("walk")
@@ -92,3 +95,27 @@ func update_animation(direction: Vector2) -> void:
 		sprite.update_texture(last_direction, "idle")
 ```
 *Por que foi feito assim:* Desacopla o estado de movimento da representação gráfica. Quando o jogador cessa o movimento, a variável `last_direction` garante que o sprite permaneça virado para o último quadrante de movimento durante o estado `idle`.
+
+### 5. Execução do Golpe e Transição de Ataque (`attack`)
+```gdscript
+func attack() -> void:
+	if not can_attack or is_attacking or _attack_cooldown_timer > 0.0:
+		return
+	
+	is_attacking = true
+	update_hitbox_direction(last_direction)
+	_attack_cooldown_timer = attack_cooldown
+	if sprite != null:
+		sprite.update_texture(last_direction, "attack")
+	if animation_player != null:
+		animation_player.play("attack")
+	attack_started.emit(last_direction)
+
+func _on_animation_player_animation_finished(anim_name: StringName) -> void:
+	if anim_name == &"attack":
+		is_attacking = false
+		var current_input: Vector2 = get_input_direction()
+		update_animation(current_input)
+```
+*Por que foi feito assim:* O ataque é disparado com proteção contra reentrância via `is_attacking` e `_attack_cooldown_timer`. Ao término da animação no `AnimationPlayer`, o sinal `animation_finished` restaura de forma assíncrona o estado `is_attacking = false` e devolve o controle ao movimento em tempo real sem interrupções indesejadas.
+

@@ -14,8 +14,13 @@ extends Sprite2D
 @export var walk_up: Texture2D
 @export var walk_side: Texture2D
 
+@export_group("Attack Spritesheets")
+@export var attack_down: Texture2D
+@export var attack_up: Texture2D
+@export var attack_side: Texture2D
 
-## Atualiza a textura e espelhamento do sprite com base no vetor direcional e no estado de animação ("idle" ou "walk").
+
+## Atualiza a textura e espelhamento do sprite com base no vetor direcional e no estado de animação ("idle", "walk" ou "attack").
 func update_texture(direction: Vector2, anim_state: String) -> void:
 	var selected_texture: Texture2D = null
 	
@@ -25,6 +30,8 @@ func update_texture(direction: Vector2, anim_state: String) -> void:
 			selected_texture = idle_side
 		elif anim_state == "walk":
 			selected_texture = walk_side
+		elif anim_state == "attack":
+			selected_texture = attack_side
 	else:
 		flip_h = false
 		if direction.y > 0:
@@ -32,11 +39,15 @@ func update_texture(direction: Vector2, anim_state: String) -> void:
 				selected_texture = idle_down
 			elif anim_state == "walk":
 				selected_texture = walk_down
+			elif anim_state == "attack":
+				selected_texture = attack_down
 		elif direction.y < 0:
 			if anim_state == "idle":
 				selected_texture = idle_up
 			elif anim_state == "walk":
 				selected_texture = walk_up
+			elif anim_state == "attack":
+				selected_texture = attack_up
 				
 	# Aplica a textura apenas se estiver configurada e for diferente da ativa atualmente
 	if selected_texture != null and texture != selected_texture:
