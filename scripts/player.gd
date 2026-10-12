@@ -17,6 +17,8 @@ signal attack_started(direction: Vector2)
 @export var can_move: bool = true
 ## Determina se o jogador pode atacar. Pode ser desativado por atordoamentos ou cooldowns.
 @export var can_attack: bool = true
+## Indica se o jogador está executando a animação de ataque atualmente.
+@export var is_attacking: bool = false
 
 @export_group("Combat Settings")
 ## Tempo de espera mínimo entre ataques consecutivos (cooldown em segundos).
@@ -43,6 +45,8 @@ func _ready() -> void:
 	if hitbox != null:
 		hitbox.source = self
 	update_hitbox_direction(last_direction)
+	if animation_player != null and not animation_player.animation_finished.is_connected(_on_animation_player_animation_finished):
+		animation_player.animation_finished.connect(_on_animation_player_animation_finished)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -81,7 +85,11 @@ func calculate_velocity(direction: Vector2) -> Vector2:
 
 
 ## Gerencia as transições de animação (Idle / Walk) e orienta a textura direcional do sprite.
+## Ignora transições se um ataque estiver sendo executado no momento.
 func update_animation(direction: Vector2) -> void:
+	if is_attacking:
+		return
+
 	if direction != Vector2.ZERO:
 		last_direction = direction
 		update_hitbox_direction(direction)
@@ -98,14 +106,28 @@ func update_hitbox_direction(direction: Vector2) -> void:
 		hitbox_pivot.rotation = direction.angle()
 
 
-## Executa o ataque básico do jogador caso esteja apto (respeitando can_attack e o cooldown).
+## Executa o ataque básico do jogador caso esteja apto (respeitando can_attack, is_attacking e cooldown).
 func attack() -> void:
-	if not can_attack or _attack_cooldown_timer > 0.0:
+	if not can_attack or is_attacking or _attack_cooldown_timer > 0.0:
 		return
 	
+	is_attacking = true
 	update_hitbox_direction(last_direction)
 	_attack_cooldown_timer = attack_cooldown
+	if sprite != null:
+		sprite.update_texture(last_direction, "attack")
+	if animation_player != null:
+		animation_player.play("attack")
 	attack_started.emit(last_direction)
+
+
+## Chamado quando uma animação do AnimationPlayer é concluída.
+## Restaura o estado is_attacking e devolve o controle do sprite para a locomoção atual.
+func _on_animation_player_animation_finished(anim_name: StringName) -> void:
+	if anim_name == &"attack":
+		is_attacking = false
+		var current_input: Vector2 = get_input_direction()
+		update_animation(current_input)
 
 
 ## Utilitário de conveniência: aplica atordoamento (stun) temporário ao jogador.
