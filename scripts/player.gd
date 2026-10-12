@@ -23,8 +23,10 @@ signal attack_started(direction: Vector2)
 @export_group("Combat Settings")
 ## Tempo de espera mínimo entre ataques consecutivos (cooldown em segundos).
 @export var attack_cooldown: float = 0.4
-## Velocidade do impulso frontal (passo à frente / lunge) durante o golpe, estilo Minecraft Dungeons.
-@export var attack_lunge_speed: float = 70.0
+## Velocidade de impulso inicial para o corte frontal rápido (lunge).
+@export var attack_lunge_speed: float = 240.0
+## Taxa de desaceleração/atrito do impulso frontal (freia rapidamente o avanço).
+@export var attack_lunge_friction: float = 2400.0
 
 @export_group("Dependencies")
 ## Referência ao componente visual de gerenciamento de sprites e direções.
@@ -41,6 +43,9 @@ var last_direction: Vector2 = Vector2.DOWN
 
 ## Temporizador interno para controle de cadência do ataque.
 var _attack_cooldown_timer: float = 0.0
+
+## Vetor de velocidade ativo do impulso frontal durante o golpe.
+var _lunge_velocity: Vector2 = Vector2.ZERO
 
 
 func _ready() -> void:
@@ -65,9 +70,12 @@ func _physics_process(delta: float) -> void:
 
 
 ## Atualiza temporizadores internos de combate a cada tick da física.
+## Aplica desaceleração rápida (atrito) no impulso de ataque para estancar o avanço.
 func update_timers(delta: float) -> void:
 	if _attack_cooldown_timer > 0.0:
 		_attack_cooldown_timer = max(0.0, _attack_cooldown_timer - delta)
+	if is_attacking and _lunge_velocity != Vector2.ZERO:
+		_lunge_velocity = _lunge_velocity.move_toward(Vector2.ZERO, attack_lunge_friction * delta)
 
 
 ## Captura e normaliza os eixos de entrada configurados no Input Map (movimentação em 8 direções).
@@ -79,13 +87,13 @@ func get_input_direction() -> Vector2:
 
 
 ## Calcula a velocidade linear do corpo físico aplicando a velocidade escalar ao vetor unitário de direção.
-## Durante o ataque, substitui o movimento livre por um impulso frontal (lunge) na direção do golpe,
-## eliminando deslizes laterais ou incongruências visuais (estilo Minecraft Dungeons).
+## Durante o ataque, substitui o movimento livre pelo vetor do impulso frontal (lunge) que desacelera
+## rapidamente até parar, garantindo um estalo ágil para frente sem deslocamento excessivo.
 func calculate_velocity(direction: Vector2) -> Vector2:
 	if not can_move:
 		return Vector2.ZERO
 	if is_attacking:
-		return last_direction * attack_lunge_speed
+		return _lunge_velocity
 	return direction * speed
 
 
@@ -119,6 +127,7 @@ func attack() -> void:
 	is_attacking = true
 	update_hitbox_direction(last_direction)
 	_attack_cooldown_timer = attack_cooldown
+	_lunge_velocity = last_direction * attack_lunge_speed
 	if sprite != null:
 		sprite.update_texture(last_direction, "attack")
 	if animation_player != null:
@@ -131,6 +140,7 @@ func attack() -> void:
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name == &"attack":
 		is_attacking = false
+		_lunge_velocity = Vector2.ZERO
 		var current_input: Vector2 = get_input_direction()
 		update_animation(current_input)
 
