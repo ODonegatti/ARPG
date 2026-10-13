@@ -2,7 +2,13 @@ class_name Hitbox
 extends Area2D
 
 ## Componente de Hitbox para detecção de acerto e aplicação de dano em alvos (Hurtbox).
-## Pertence à camada PlayerHitbox (Layer 4) e detecta a camada Enemies (Layer 3).
+## Pertence à camada PlayerHitbox (Layer 4, valor 8) e detecta a camada Enemies (Layer 3, valor 4).
+
+## Sinal emitido quando a hitbox se torna ativa para causar dano.
+signal activated()
+
+## Sinal emitido quando a janela ativa de dano da hitbox é encerrada.
+signal deactivated()
 
 ## Quantidade de dano infligida pelo golpe.
 @export var damage: int = 10
@@ -13,23 +19,36 @@ extends Area2D
 ## Referência à entidade de origem que desferiu o golpe.
 @export var source: Node2D = null
 
+## Indica se a hitbox está atualmente ativa e apta a registrar colisões de dano.
+var is_active: bool = false:
+	get:
+		return is_active
+
 ## Referência ao CollisionShape2D filho responsável pelo volume de detecção.
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 
 
 func _ready() -> void:
-	# Garante que a hitbox inicia desativada caso não tenha sido desativada no editor
-	if collision_shape != null:
-		collision_shape.set_deferred("disabled", true)
+	# Garante estado desativado inicial seguro
+	deactivate()
 
 
-## Ativa a forma de colisão da hitbox de maneira segura na física.
+## Ativa a detecção e o volume de colisão da hitbox de maneira segura.
 func activate() -> void:
+	is_active = true
+	set_deferred("monitoring", true)
+	set_deferred("monitorable", true)
 	if collision_shape != null:
 		collision_shape.set_deferred("disabled", false)
+	activated.emit()
 
 
-## Desativa a forma de colisão da hitbox de maneira segura na física.
+## Desativa a detecção e o volume de colisão da hitbox de maneira segura.
 func deactivate() -> void:
+	is_active = false
+	set_deferred("monitoring", false)
+	set_deferred("monitorable", false)
 	if collision_shape != null:
 		collision_shape.set_deferred("disabled", true)
+	deactivated.emit()
+

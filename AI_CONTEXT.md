@@ -116,7 +116,7 @@ Ao finalizar um card ou conjunto de cards que formam uma entrega, o Alfred deve 
 - **Card 3:** `[Dev] #13 - Animação de Ataque Direcional (AnimationTree)` - **[CONCLUÍDO]**
   - *Critérios:* Criação das animações de golpe básico para as direções principais; integração e transição de estado de ataque no `AnimationTree` sem travar o movimento base se necessário.
   - *Tempo:* Terça, 13:20 – 14:15 (55m)
-- **Card 4:** `[Dev] #14 - Sincronização de Frame de Ativação da Hitbox`
+- **Card 4:** `[Dev] #14 - Sincronização de Frame de Ativação da Hitbox` - **[CONCLUÍDO]**
   - *Critérios:* Script GDScript e sinais do `AnimationPlayer` para ligar e desligar a propriedade `monitoring` da Hitbox apenas nos frames ativos do golpe.
   - *Tempo:* Terça, 14:15 – 15:30 (1h 15m)
 

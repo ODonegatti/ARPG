@@ -55,7 +55,8 @@ func _run_tests() -> void:
 	player.attack() # Segunda chamada imediata durante o cooldown
 	assert(_attack_signal_count == 0, "Não deve permitir ataque consecutivo antes do cooldown terminar")
 	
-	# Avança o cooldown manualmente via update_timers
+	# Simula a conclusão da animação e avanço do temporizador de cooldown
+	player._on_animation_player_animation_finished(&"attack")
 	player.update_timers(player.attack_cooldown + 0.05)
 	player.attack()
 	assert(_attack_signal_count == 1, "Deve permitir atacar novamente após o cooldown expirar")
@@ -63,6 +64,7 @@ func _run_tests() -> void:
 	
 	# 5. Validação de Bloqueio de Ataque (can_attack = false)
 	_attack_signal_count = 0
+	player._on_animation_player_animation_finished(&"attack")
 	player.update_timers(player.attack_cooldown + 0.05)
 	player.can_attack = false
 	player.attack()
@@ -72,6 +74,7 @@ func _run_tests() -> void:
 	
 	# 6. Validação do Input Map de player_attack
 	_attack_signal_count = 0
+	player._on_animation_player_animation_finished(&"attack")
 	player.update_timers(player.attack_cooldown + 0.05)
 	var attack_event: InputEventAction = InputEventAction.new()
 	attack_event.action = "player_attack"
@@ -79,6 +82,7 @@ func _run_tests() -> void:
 	player._unhandled_input(attack_event)
 	assert(_attack_signal_count == 1, "Ação 'player_attack' deve invocar attack()")
 	print("[PASS] 6. Integração do Input Map 'player_attack' via _unhandled_input validada.")
+
 	
 	# 7. Validação do utilitário apply_stun
 	player.apply_stun(0.05)
