@@ -171,4 +171,3 @@ func apply_stun(duration: float) -> void:
 	await get_tree().create_timer(duration).timeout
 	can_move = true
 	can_attack = true
-

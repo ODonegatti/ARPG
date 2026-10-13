@@ -1,0 +1,93 @@
+[gd_scene format=3 uid="uid://ctad3jp7yxxgg"]
+
+[ext_resource type="Script" uid="uid://cj2kgei1mrssx" path="res://scripts/dummy.gd" id="1_dummy"]
+[ext_resource type="Texture2D" uid="uid://taktt015v5n5" path="res://assets/Tiny Swords (Free Pack)/Terrain/Tileset/Shadow.png" id="2_shadow"]
+[ext_resource type="Texture2D" uid="uid://dbpw7ooo564id" path="res://assets/Dummy/Hit/Png-files/Hit1.png" id="3_hit1"]
+[ext_resource type="Texture2D" uid="uid://cd6epcobqplpg" path="res://assets/Dummy/Hit/Png-files/Hit 2.png" id="4_hit2"]
+[ext_resource type="Texture2D" uid="uid://bo2xwdutmsojf" path="res://assets/Dummy/Hit/Png-files/Hit 3.png" id="5_hit3"]
+[ext_resource type="Texture2D" uid="uid://c4msujd20apkx" path="res://assets/Dummy/Hit/Png-files/Hit 4.png" id="6_hit4"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5ohk3"]
+height = 32.0
+
+[sub_resource type="Animation" id="Animation_reset"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("3_hit1")]
+}
+
+[sub_resource type="Animation" id="Animation_hit"]
+resource_name = "hit"
+length = 0.25
+step = 0.06
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.06, 0.12, 0.18),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [ExtResource("4_hit2"), ExtResource("5_hit3"), ExtResource("6_hit4"), ExtResource("3_hit1")]
+}
+
+[sub_resource type="Animation" id="Animation_idle"]
+resource_name = "idle"
+length = 0.1
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("3_hit1")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_dummy"]
+_data = {
+&"RESET": SubResource("Animation_reset"),
+&"hit": SubResource("Animation_hit"),
+&"idle": SubResource("Animation_idle")
+}
+
+[node name="Dummy" type="CharacterBody2D" unique_id=1776484409]
+scale = Vector2(1.8, 1.8)
+collision_layer = 4
+collision_mask = 7
+motion_mode = 1
+script = ExtResource("1_dummy")
+metadata/_edit_group_ = true
+
+[node name="Shadow" type="Sprite2D" parent="." unique_id=1914388906]
+position = Vector2(0, 11)
+scale = Vector2(0.28, 0.14)
+texture = ExtResource("2_shadow")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1921285741]
+texture_filter = 1
+scale = Vector2(2, 2)
+texture = ExtResource("3_hit1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1425926438]
+position = Vector2(2, 0)
+shape = SubResource("CapsuleShape2D_5ohk3")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1655716597]
+libraries/ = SubResource("AnimationLibrary_dummy")
+autoplay = &"idle"
