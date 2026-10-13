@@ -123,3 +123,33 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 ```
 *Por que foi feito assim:* O ataque é disparado com proteção contra reentrância via `is_attacking` e `_attack_cooldown_timer`. Ao término da animação no `AnimationPlayer`, o sinal `animation_finished` restaura de forma assíncrona o estado `is_attacking = false` e devolve o controle ao movimento em tempo real sem interrupções indesejadas.
 
+### 6. Sincronização de Frame da Hitbox (Card #14)
+```gdscript
+# Trilhas do AnimationPlayer na animação "attack" (0.4s):
+# t = 0.00s..0.05s: Preparação (Hitbox: monitoring=false, CollisionShape2D: disabled=true)
+# t = 0.10s..0.20s: Janela Ativa do Corte (Hitbox: monitoring=true, CollisionShape2D: disabled=false)
+# t = 0.25s..0.40s: Recuperação / Recuo (Hitbox: monitoring=false, CollisionShape2D: disabled=true)
+
+# No componente Hitbox (hitbox.gd):
+func activate() -> void:
+	is_active = true
+	set_deferred("monitoring", true)
+	set_deferred("monitorable", true)
+	if collision_shape != null:
+		collision_shape.set_deferred("disabled", false)
+	activated.emit()
+
+func deactivate() -> void:
+	is_active = false
+	set_deferred("monitoring", false)
+	set_deferred("monitorable", false)
+	if collision_shape != null:
+		collision_shape.set_deferred("disabled", true)
+	deactivated.emit()
+```
+*Por que foi feito assim:*
+1. **Janela Ativa de Dano (*Active Hitbox Frames*):** Em jogos de ação e combate (como *Dark Souls* ou *Minecraft Dungeons*), a espada não pode causar dano enquanto está sendo empunhada para trás na preparação ou guardada após o corte. O dano só deve ser registrado quando a lâmina atinge a trajetória frontal.
+2. **Sincronização Visual x Física:** O `AnimationPlayer` modula simultaneamente o frame visual do sprite (`Sprite2D:frame`) e os atributos físicos da Hitbox (`monitoring` e `disabled`), garantindo sincronia perfeita sem polling em `_process`.
+3. **Uso de `set_deferred` na Física:** A engine Godot proíbe a alteração imediata de estados de colisão durante a execução de callbacks de física (evitando conflitos na árvore de física rígida/área). O `set_deferred` posterga a alteração com segurança para o fim do frame de física.
+4. **Mecanismo de Fail-Safe Defensivo:** Se o jogador sofrer um atordoamento (*stun*) ou o ataque for interrompido, `player.disable_hitbox()` garante que a área de dano nunca fique ativada "fantasma" no cenário.
+

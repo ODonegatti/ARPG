@@ -135,12 +135,25 @@ func attack() -> void:
 	attack_started.emit(last_direction)
 
 
+## Ativa a detecção da hitbox de combate. Pode ser acionada por trilhas de animação ou chamadas diretas.
+func enable_hitbox() -> void:
+	if hitbox != null:
+		hitbox.activate()
+
+
+## Desativa a detecção da hitbox de combate. Pode ser acionada por trilhas de animação ou chamadas diretas.
+func disable_hitbox() -> void:
+	if hitbox != null:
+		hitbox.deactivate()
+
+
 ## Chamado quando uma animação do AnimationPlayer é concluída.
-## Restaura o estado is_attacking e devolve o controle do sprite para a locomoção atual.
+## Restaura o estado is_attacking, desativa a hitbox (fail-safe) e devolve o controle do sprite para a locomoção atual.
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name == &"attack":
 		is_attacking = false
 		_lunge_velocity = Vector2.ZERO
+		disable_hitbox()
 		var current_input: Vector2 = get_input_direction()
 		update_animation(current_input)
 
@@ -149,6 +162,13 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 func apply_stun(duration: float) -> void:
 	can_move = false
 	can_attack = false
+	if is_attacking:
+		is_attacking = false
+		_lunge_velocity = Vector2.ZERO
+		disable_hitbox()
+		if animation_player != null:
+			animation_player.stop()
 	await get_tree().create_timer(duration).timeout
 	can_move = true
 	can_attack = true
+
