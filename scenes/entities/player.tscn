@@ -8,10 +8,11 @@
 [ext_resource type="Texture2D" uid="uid://c6wcg5616y15e" path="res://assets/FREE_Adventurer 2D Pixel Art/Sprites/RUN/run_down.png" id="6_73kkf"]
 [ext_resource type="Texture2D" uid="uid://bhjwlhceeal7c" path="res://assets/FREE_Adventurer 2D Pixel Art/Sprites/RUN/run_up.png" id="7_n5sgd"]
 [ext_resource type="Texture2D" uid="uid://dlvaq11uqw0av" path="res://assets/FREE_Adventurer 2D Pixel Art/Sprites/RUN/run_right.png" id="8_5ki56"]
-[ext_resource type="Script" path="res://scripts/hitbox.gd" id="9_hitbox"]
+[ext_resource type="Script" uid="uid://bsaunac4dl37w" path="res://scripts/hitbox.gd" id="9_hitbox"]
 [ext_resource type="Texture2D" uid="uid://diqnewqsxxufv" path="res://assets/FREE_Adventurer 2D Pixel Art/Sprites/ATTACK 1/attack1_down.png" id="10_atkdwn"]
 [ext_resource type="Texture2D" uid="uid://dox6f6eooicit" path="res://assets/FREE_Adventurer 2D Pixel Art/Sprites/ATTACK 1/attack1_up.png" id="11_atkup"]
 [ext_resource type="Texture2D" uid="uid://bgx4xiovyodf7" path="res://assets/FREE_Adventurer 2D Pixel Art/Sprites/ATTACK 1/attack1_right.png" id="12_atkright"]
+[ext_resource type="Texture2D" uid="uid://taktt015v5n5" path="res://assets/Tiny Swords (Free Pack)/Terrain/Tileset/Shadow.png" id="13_shadow"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5ohk3"]
 radius = 28.0
@@ -68,38 +69,6 @@ tracks/3/keys = {
 "values": [true]
 }
 
-[sub_resource type="Animation" id="Animation_42nxq"]
-resource_name = "idle_down"
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 2, 3, 4, 5, 6, 7]
-}
-
-[sub_resource type="Animation" id="Animation_dnykm"]
-resource_name = "idle_down"
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 2, 3, 4, 5, 6, 7]
-}
-
 [sub_resource type="Animation" id="Animation_attack"]
 resource_name = "attack"
 length = 0.4
@@ -153,6 +122,38 @@ tracks/3/keys = {
 "values": [true, false, true]
 }
 
+[sub_resource type="Animation" id="Animation_42nxq"]
+resource_name = "idle_down"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7]
+}
+
+[sub_resource type="Animation" id="Animation_dnykm"]
+resource_name = "idle_down"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_5u6hq"]
 _data = {
 &"RESET": SubResource("Animation_1ie0h"),
@@ -165,16 +166,24 @@ _data = {
 size = Vector2(68, 55)
 
 [node name="Player" type="CharacterBody2D" unique_id=773974509]
-scale = Vector2(0.5, 0.5)
+z_index = 1
+scale = Vector2(0.8, 0.8)
 collision_layer = 2
-collision_mask = 3
+collision_mask = 7
+motion_mode = 1
 script = ExtResource("1_08t41")
+metadata/_edit_group_ = true
 
 [node name="Player_collision" type="CollisionShape2D" parent="." unique_id=2107020542]
 shape = SubResource("CapsuleShape2D_5ohk3")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=2100328836]
 scale = Vector2(0.5, 0.5)
+
+[node name="Shadow" type="Sprite2D" parent="." unique_id=1366256248]
+position = Vector2(0, 35)
+scale = Vector2(0.7, 0.35)
+texture = ExtResource("13_shadow")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1371866062]
 texture_filter = 1
@@ -209,4 +218,3 @@ script = ExtResource("9_hitbox")
 position = Vector2(44, 0)
 shape = SubResource("RectangleShape2D_5ohk3")
 disabled = true
-
