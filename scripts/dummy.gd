@@ -17,11 +17,23 @@ extends CharacterBody2D
 ## Referência ao AnimationPlayer responsável pelas animações de repouso e impacto.
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 
+@export_group("Combat Components")
+## Referência ao componente Hurtbox responsável por detectar golpes recebidos.
+@onready var hurtbox: Hurtbox = $Hurtbox
+
 
 func _ready() -> void:
 	velocity = Vector2.ZERO
-	if animation_player != null and animation_player.has_animation(&"idle"):
-		animation_player.play(&"idle")
+	if animation_player != null:
+		if animation_player.has_animation(&"idle"):
+			animation_player.play(&"idle")
+		if not animation_player.animation_finished.is_connected(_on_animation_finished):
+			animation_player.animation_finished.connect(_on_animation_finished)
+	
+	if hurtbox != null:
+		hurtbox.owner_entity = self
+		if not hurtbox.hit_received.is_connected(_on_hurtbox_hit_received):
+			hurtbox.hit_received.connect(_on_hurtbox_hit_received)
 
 
 func _physics_process(delta: float) -> void:
@@ -30,8 +42,21 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 
 
+## Callback executado quando a Hurtbox detecta um acerto de Hitbox.
+## Dispara a reação visual de impacto do boneco (Card #16).
+## A dedução de pontos de vida será integrada no Card #17 e knockback no Card #18.
+func _on_hurtbox_hit_received(_hitbox: Hitbox) -> void:
+	play_hit_animation()
+
+
+## Retorna para a animação de repouso após o término do impacto.
+func _on_animation_finished(anim_name: StringName) -> void:
+	if anim_name == &"hit":
+		if animation_player != null and animation_player.has_animation(&"idle"):
+			animation_player.play(&"idle")
+
+
 ## Dispara a animação visual de impacto do boneco ao sofrer dano.
-## Será conectado à Hurtbox no Card #16 e ao sistema de vida no Card #17.
 func play_hit_animation() -> void:
 	if animation_player != null and animation_player.has_animation(&"hit"):
 		animation_player.stop()

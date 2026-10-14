@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://cd6epcobqplpg" path="res://assets/Dummy/Hit/Png-files/Hit 2.png" id="4_hit2"]
 [ext_resource type="Texture2D" uid="uid://bo2xwdutmsojf" path="res://assets/Dummy/Hit/Png-files/Hit 3.png" id="5_hit3"]
 [ext_resource type="Texture2D" uid="uid://c4msujd20apkx" path="res://assets/Dummy/Hit/Png-files/Hit 4.png" id="6_hit4"]
+[ext_resource type="Script" path="res://scripts/hurtbox.gd" id="7_hurtbox"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5ohk3"]
 height = 32.0
@@ -66,6 +67,9 @@ _data = {
 &"idle": SubResource("Animation_idle")
 }
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5ohk3"]
+size = Vector2(17.777779, 31.111113)
+
 [node name="Dummy" type="CharacterBody2D" unique_id=1776484409]
 scale = Vector2(1.8, 1.8)
 collision_layer = 4
@@ -91,3 +95,12 @@ shape = SubResource("CapsuleShape2D_5ohk3")
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1655716597]
 libraries/ = SubResource("AnimationLibrary_dummy")
 autoplay = &"idle"
+
+[node name="Hurtbox" type="Area2D" parent="." unique_id=557136102]
+collision_layer = 4
+collision_mask = 8
+script = ExtResource("7_hurtbox")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=404655498]
+position = Vector2(2.2222223, 0)
+shape = SubResource("RectangleShape2D_5ohk3")

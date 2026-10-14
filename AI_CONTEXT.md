@@ -124,7 +124,7 @@ Ao finalizar um card ou conjunto de cards que formam uma entrega, o Alfred deve 
 - **Card 5:** `[Dev] #15 - Criação da Cena Base do Inimigo/Alvo (Dummy)` - **[CONCLUÍDO]**
   - *Critérios:* Criação da cena `Dummy.tscn` (`CharacterBody2D` simples) com sprite estático/animado e sombra básica para testes de dano.
   - *Tempo:* Quarta, 13:20 – 14:20 (1h)
-- **Card 6:** `[Dev] #16 - Implementação da Hurtbox no Inimigo`
+- **Card 6:** `[Dev] #16 - Implementação da Hurtbox no Inimigo` - **[CONCLUÍDO]**
   - *Critérios:* Adição de um nó `Area2D` (Hurtbox) no Dummy configurado para escutar as camadas de colisão da Hitbox do Player.
   - *Tempo:* Quarta, 14:20 – 15:30 (1h 10m)
 
