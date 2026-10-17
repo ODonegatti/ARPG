@@ -18,6 +18,18 @@ extends CharacterBody2D
 ## Tween ativo do flash (evita flashes sobrepostos).
 var _flash_tween: Tween = null
 
+## Sinal emitido uma vez quando o boneco é destruído (hp chegou a zero).
+signal died
+
+@export_group("Destruction")
+## Se verdadeiro, a destruição libera também pixels vermelhos (sangue). O Dummy é um objeto, então é falso.
+@export var is_living: bool = false
+
+## Impede que a destruição seja executada mais de uma vez.
+var _is_dying: bool = false
+## Direção do último golpe recebido (usada para arremessar os fragmentos).
+var _last_hit_direction: Vector2 = Vector2.ZERO
+
 @export_group("Visual Dependencies")
 ## Referência ao sprite principal do boneco.
 @onready var sprite: Sprite2D = $Sprite2D
@@ -65,10 +77,22 @@ func _physics_process(delta: float) -> void:
 ## Dispara a reação visual de impacto do boneco (Card #16).
 ## Deduz a vida (Card #17) e aplica knockback + flash (Card #18).
 func _on_hurtbox_hit_received(hitbox: Hitbox) -> void:
+	if _is_dying:
+		return
+	_last_hit_direction = _direcao_do_golpe(hitbox)
 	receber_dano(hitbox.damage)
+	if _is_dying:
+		return
 	aplicar_knockback(_calcular_knockback(hitbox))
 	play_hit_animation()
 	play_flash()
+
+
+## Direção oposta ao atacante (ZERO se a origem do golpe for desconhecida).
+func _direcao_do_golpe(hitbox: Hitbox) -> Vector2:
+	if hitbox.source != null:
+		return (global_position - hitbox.source.global_position).normalized()
+	return Vector2.ZERO
 
 
 ## Calcula o vetor de knockback (direção oposta ao atacante * intensidade) a partir do golpe.
@@ -78,10 +102,7 @@ func _on_hurtbox_hit_received(hitbox: Hitbox) -> void:
 ## (ex: `hitbox.attack_type`) e selecionará força/multiplicador/direção do impulso.
 ## Hoje usa apenas `Hitbox.knockback_force`.
 func _calcular_knockback(hitbox: Hitbox) -> Vector2:
-	var direcao: Vector2 = Vector2.ZERO
-	if hitbox.source != null:
-		direcao = (global_position - hitbox.source.global_position).normalized()
-	return direcao * hitbox.knockback_force
+	return _direcao_do_golpe(hitbox) * hitbox.knockback_force
 
 
 ## Aplica um impulso instantâneo; o atrito em `_physics_process` o amortece.
@@ -108,9 +129,29 @@ func play_flash() -> void:
 ##   - source: Node2D         -> Hitbox.source; hoje usado por `_calcular_knockback`.
 ##   - (futuro) tipo de ataque -> definirá o knockback; ver `_calcular_knockback`.
 ## Ao adicioná-los, atualizar a chamada em `_on_hurtbox_hit_received`.
-## A checagem de morte (hp <= 0 -> queue_free) será feita no Card #19.
+## A morte (hp <= 0) é tratada em `_morrer()` (Card #19).
 func receber_dano(valor: int) -> void:
+	if _is_dying:
+		return
 	hp -= valor
+	if hp <= 0:
+		_morrer()
+
+
+## Destrói o boneco com o efeito padrão do projeto: o sprite se quebra em pedaços
+## arremessados pela tela (e sangue, se `is_living`), e a cena é removida com segurança.
+func _morrer() -> void:
+	if _is_dying:
+		return
+	_is_dying = true
+	velocity = Vector2.ZERO
+	set_physics_process(false)
+	if hurtbox != null:
+		hurtbox.disable()
+	if sprite != null and get_parent() != null:
+		DestructionEffect.spawn(sprite, get_parent(), is_living, _last_hit_direction)
+	died.emit()
+	queue_free()
 
 
 ## Retorna para a animação de repouso após o término do impacto.
