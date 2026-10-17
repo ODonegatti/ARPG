@@ -129,7 +129,7 @@ Ao finalizar um card ou conjunto de cards que formam uma entrega, o Alfred deve 
   - *Tempo:* Quarta, 14:20 – 15:30 (1h 10m)
 
 ### **Quinta-feira (15/10)**
-- **Card 7:** `[Dev] #17 - Sistema de Tomada de Dano e Vida (HP Component)`
+- **Card 7:** `[Dev] #17 - Sistema de Tomada de Dano e Vida (HP Component)` - **[CONCLUÍDO]**
   - *Critérios:* Variável de vida (`hp`) encapsulada no script do Dummy; criação da função `receber_dano(valor)` conectada ao sinal `area_entered` da Hurtbox.
   - *Tempo:* Quinta, 13:20 – 14:20 (1h)
 - **Card 8:** `[Dev] #18 - Feedback Visual de Dano (Knockback Simples & Flash)`
