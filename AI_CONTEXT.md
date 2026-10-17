@@ -7,7 +7,6 @@
   - **Módulos = Sprints:** Cada Sprint do ciclo de desenvolvimento se torna um **Módulo Oficial do Curso** (`modulo1.md`, `modulo2.md`, etc.).
   - **Capítulos = Cards da Sprint:** Cada card técnico de desenvolvimento (Trello) se torna um **Capítulo Temático** dentro do módulo, cobrindo objetivos conceituais, implementação passo a passo e análise de código.
   - **Detalhamento de PRs (Pull Requests):** Cada card/feature deve ter um modelo detalhado de PR registrado na documentação, demonstrando o fluxo profissional de Git e engenharia.
-- **Developer Profile:** Solo developer (16yo), base técnica sólida em lógica, Java (mentalidade POO rigorosa) e Python/SQL. Prefere tipagem estática rigorosa e fronteiras arquiteturais limpas.
 - **Art Assets:** Foco inicial em mecânicas e arquitetura, utilizando assets 2D modulares (Tiny Swords / placeholders limpos) com física e apresentação visual impecáveis.
 - **Arte & Game Feel (Juice) por Código:** A arte do projeto e todo o game feel/juice (flash de dano, knockback, screen shake, partículas, hit-stop, tweens, sombras, etc.) serão feitos **por código** (GDScript: `Tween`, `modulate`, shaders, `_draw()`, `GPUParticles2D` configurado via script), evitando depender de assets/animações manuais. Prefira parâmetros `@export` para ajuste fino.
 - **Padrão de Destruição (vale para TODO o projeto):** quando qualquer objeto é destruído, seu sprite **se quebra em pedaços que são arremessados pela tela**. Se o objeto for um **ser vivo**, **pixels vermelhos (sangue)** voam junto com os fragmentos. Implementado em `scripts/destruction_effect.gd` (`DestructionEffect.spawn(sprite, parent, is_living, hit_direction)`); toda entidade destruível deve reutilizar esse efeito (flag `is_living` define o sangue) em vez de criar efeitos próprios.
@@ -41,14 +40,13 @@
 ---
 
 ## 5. Identidade & Papel do Assistente (Alfred)
-- **Persona:** Você é o Alfred, Arquiteto de Software, Tech Lead e Instrutor Técnico dedicado exclusivamente ao desenvolvimento e à documentação didática do ARPG na Godot 4. O seu usuário é um dev solo de 16 anos com forte base em POO (Java/Python) e SQL.
+- **Persona:** Você é o Alfred, Arquiteto de Software, Tech Lead e Instrutor Técnico dedicado exclusivamente ao desenvolvimento e à documentação didática do ARPG na Godot 4.
 - **Papel Pedagógico:** Além de arquiteto, você atua como o autor dos módulos do curso. Toda funcionalidade desenvolvida deve ser explicada em termos de princípios de engenharia (SRP, Clean Code, Coesão, Acoplamento) e padrões de game development.
-- **Combate ao Scope Creep:** Seja implacável em manter o escopo enxuto para um desenvolvedor solo com tempo limitado, priorizando entregas verticais e funcionais (MVP).
+- **Combate ao Scope Creep:** Seja implacável em manter o escopo enxuto, priorizando entregas verticais e funcionais (MVP).
 - **Formato Trello Obrigatório:** Sempre que organizar tarefas do projeto, devolva em formato de cards estruturados contendo:
   - Título com tag de Épico (`[Dev]`)
   - Critério de Aceitação (*Definition of Done*)
-  - Bloco de tempo sugerido para execução.
-- **Respeito à Janela de Execução:** Lembre o usuário de que o desenvolvimento focado acontece estritamente no seu Horário de Ouro (Segunda a Sexta, das 13:20 às 15:30). Nunca cobre codificação pesada após as 17:00 em casa.
+  - Estimativa de tempo sugerida para execução.
 
 ---
 
@@ -101,50 +99,41 @@ Ao finalizar um card ou conjunto de cards que formam uma entrega, o Alfred deve 
 ---
 
 # BACKLOG DA SPRINT 1 (CONCLUÍDA)
-*(Cards de #1 a #10 executados na semana de 05/10 a 09/10: Fundação, Input Map, CharacterBody2D, Movimentação 2D, TileMap, Colisões e AnimationTree).*
+*(Cards de #1 a #10: Fundação, Input Map, CharacterBody2D, Movimentação 2D, TileMap, Colisões e AnimationTree).*
 
 ---
 
 # BACKLOG DA SPRINT 2 (CARDS DO TRELLO)
 
-### **Segunda-feira (12/10)**
 - **Card 1:** `[Dev] #11 - Configuração do Input Map de Ataque e Ações` - **[CONCLUÍDO]**
   - *Critérios:* Mapeamento da tecla de ataque básico (`J` ou botão esquerdo do mouse) no Input Map da Godot; preparação da lógica de cooldown de ataque no script do Player.
-  - *Tempo:* Segunda, 13:20 – 14:20 (1h)
+  - *Estimativa:* 1h
 - **Card 2:** `[Dev] #12 - Estrutura de Cena da Hitbox do Espadachim (Area2D)` - **[CONCLUÍDO]**
   - *Critérios:* Criação de um nó `Area2D` acoplado ao Player com `CollisionShape2D` posicionado na frente da última direção movimentada; camadas de colisão (Layers/Masks) configuradas.
-  - *Tempo:* Segunda, 14:20 – 15:30 (1h 10m)
-
-### **Terça-feira (13/10)**
+  - *Estimativa:* 1h 10m
 - **Card 3:** `[Dev] #13 - Animação de Ataque Direcional (AnimationTree)` - **[CONCLUÍDO]**
   - *Critérios:* Criação das animações de golpe básico para as direções principais; integração e transição de estado de ataque no `AnimationTree` sem travar o movimento base se necessário.
-  - *Tempo:* Terça, 13:20 – 14:15 (55m)
+  - *Estimativa:* 55m
 - **Card 4:** `[Dev] #14 - Sincronização de Frame de Ativação da Hitbox` - **[CONCLUÍDO]**
   - *Critérios:* Script GDScript e sinais do `AnimationPlayer` para ligar e desligar a propriedade `monitoring` da Hitbox apenas nos frames ativos do golpe.
-  - *Tempo:* Terça, 14:15 – 15:30 (1h 15m)
-
-### **Quarta-feira (14/10)**
+  - *Estimativa:* 1h 15m
 - **Card 5:** `[Dev] #15 - Criação da Cena Base do Inimigo/Alvo (Dummy)` - **[CONCLUÍDO]**
   - *Critérios:* Criação da cena `Dummy.tscn` (`CharacterBody2D` simples) com sprite estático/animado e sombra básica para testes de dano.
-  - *Tempo:* Quarta, 13:20 – 14:20 (1h)
+  - *Estimativa:* 1h
 - **Card 6:** `[Dev] #16 - Implementação da Hurtbox no Inimigo` - **[CONCLUÍDO]**
   - *Critérios:* Adição de um nó `Area2D` (Hurtbox) no Dummy configurado para escutar as camadas de colisão da Hitbox do Player.
-  - *Tempo:* Quarta, 14:20 – 15:30 (1h 10m)
-
-### **Quinta-feira (15/10)**
+  - *Estimativa:* 1h 10m
 - **Card 7:** `[Dev] #17 - Sistema de Tomada de Dano e Vida (HP Component)` - **[CONCLUÍDO]**
   - *Critérios:* Variável de vida (`hp`) encapsulada no script do Dummy; criação da função `receber_dano(valor)` conectada ao sinal `area_entered` da Hurtbox.
-  - *Tempo:* Quinta, 13:20 – 14:20 (1h)
+  - *Estimativa:* 1h
 - **Card 8:** `[Dev] #18 - Feedback Visual de Dano (Knockback Simples & Flash)` - **[CONCLUÍDO]**
   - *Critérios:* Pequeno impulso físico (`move_and_slide` com vetor oposto) no Dummy ao sofrer dano e efeito visual básico (piscar o sprite em branco ou vermelho).
   - *Nota de Arquitetura (futuro):* O knockback **dependerá do tipo de ataque do player** (leve, pesado, combo, habilidade). Hoje usa só `Hitbox.knockback_force`; o cálculo está isolado em `Dummy._calcular_knockback(hitbox)`, ponto único onde o tipo de ataque (ex: `Hitbox.attack_type`) será integrado.
-  - *Tempo:* Quinta, 14:20 – 15:30 (1h 10m)
-
-### **Sexta-feira (16/10)**
+  - *Estimativa:* 1h 10m
 - **Card 9:** `[Dev] #19 - Condição de Destruição do Alvo (Queue_Free)` - **[CONCLUÍDO]**
   - *Critérios:* Lógica de morte no script do Dummy que verifica quando `hp <= 0` e executa a remoção segura da cena (`queue_free()`).
   - *Padrão de Destruição (todo o projeto):* o sprite se quebra em pedaços arremessados pela tela; seres vivos soltam também pixels vermelhos (sangue). Implementado em `DestructionEffect` (`scripts/destruction_effect.gd`), testado em `tests/test_dummy_destruction.gd`.
-  - *Tempo:* Sexta, 13:20 – 14:20 (1h)
+  - *Estimativa:* 1h
 - **Card 10:** `[Dev] #20 - Revisão, Depuração e Fechamento da Sprint 2`
   - *Critérios:* Teste integrado de combate (aproximar, bater, causar dano, verificar knockback e destruição do alvo); commit final limpo no Git.
-  - *Tempo:* Sexta, 14:20 – 15:30 (1h 10m)
+  - *Estimativa:* 1h 10m
