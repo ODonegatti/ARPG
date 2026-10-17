@@ -9,6 +9,15 @@ extends CharacterBody2D
 ## Taxa de desaceleração linear para amortecer impulsos físicos recebidos (ex: knockback).
 @export var friction: float = 800.0
 
+@export_group("Hit Feedback")
+## Cor temporária aplicada ao sprite ao sofrer dano (flash).
+@export var flash_color: Color = Color(1.0, 0.3, 0.3)
+## Duração do flash em segundos.
+@export var flash_duration: float = 0.12
+
+## Tween ativo do flash (evita flashes sobrepostos).
+var _flash_tween: Tween = null
+
 @export_group("Visual Dependencies")
 ## Referência ao sprite principal do boneco.
 @onready var sprite: Sprite2D = $Sprite2D
@@ -54,20 +63,50 @@ func _physics_process(delta: float) -> void:
 
 ## Callback executado quando a Hurtbox detecta um acerto de Hitbox.
 ## Dispara a reação visual de impacto do boneco (Card #16).
-## Deduz a vida (Card #17); o knockback será integrado no Card #18.
+## Deduz a vida (Card #17) e aplica knockback + flash (Card #18).
 func _on_hurtbox_hit_received(hitbox: Hitbox) -> void:
 	receber_dano(hitbox.damage)
+	aplicar_knockback(_calcular_knockback(hitbox))
 	play_hit_animation()
+	play_flash()
+
+
+## Calcula o vetor de knockback (direção oposta ao atacante * intensidade) a partir do golpe.
+##
+## FUTURO: o knockback dependerá do TIPO DO ATAQUE do player (ex: golpe leve, pesado,
+## combo final, habilidade). Este é o ÚNICO ponto a alterar: o tipo virá do Hitbox
+## (ex: `hitbox.attack_type`) e selecionará força/multiplicador/direção do impulso.
+## Hoje usa apenas `Hitbox.knockback_force`.
+func _calcular_knockback(hitbox: Hitbox) -> Vector2:
+	var direcao: Vector2 = Vector2.ZERO
+	if hitbox.source != null:
+		direcao = (global_position - hitbox.source.global_position).normalized()
+	return direcao * hitbox.knockback_force
+
+
+## Aplica um impulso instantâneo; o atrito em `_physics_process` o amortece.
+func aplicar_knockback(impulso: Vector2) -> void:
+	velocity = impulso
+
+
+## Pisca o sprite com `flash_color` e retorna à cor normal.
+func play_flash() -> void:
+	if sprite == null:
+		return
+	if _flash_tween != null and _flash_tween.is_valid():
+		_flash_tween.kill()
+	sprite.modulate = flash_color
+	_flash_tween = create_tween()
+	_flash_tween.tween_property(sprite, "modulate", Color.WHITE, flash_duration)
 
 
 ## Aplica dano ao boneco, reduzindo o hp (limitado a zero).
 ##
 ## TODO (parâmetros futuros): esta função receberá mais parâmetros além de `valor`.
 ## Eles já existem ou serão derivados do Hitbox recebido em `_on_hurtbox_hit_received`:
-##   - knockback_force: float -> Hitbox.knockback_force; intensidade do impulso (Card #18).
-##   - source: Node2D         -> Hitbox.source; origem do golpe, usada para calcular
-##                               a direção oposta do knockback (Card #18).
-##   - (opcional) tipo de dano / crítico, se o sistema de combate evoluir.
+##   - knockback_force: float -> Hitbox.knockback_force; hoje consumido por `_calcular_knockback`.
+##   - source: Node2D         -> Hitbox.source; hoje usado por `_calcular_knockback`.
+##   - (futuro) tipo de ataque -> definirá o knockback; ver `_calcular_knockback`.
 ## Ao adicioná-los, atualizar a chamada em `_on_hurtbox_hit_received`.
 ## A checagem de morte (hp <= 0 -> queue_free) será feita no Card #19.
 func receber_dano(valor: int) -> void:
