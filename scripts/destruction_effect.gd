@@ -77,8 +77,8 @@ func _build_pieces(source: Sprite2D, base_dir: Vector2) -> void:
 	var size: Vector2i = Vector2i(texture.get_size())
 	var cols: int = maxi(grid_columns, 1)
 	var rows: int = maxi(grid_rows, 1)
-	var cell_w: int = maxi(size.x / cols, 1)
-	var cell_h: int = maxi(size.y / rows, 1)
+	var cell_w: int = maxi(floori(float(size.x) / cols), 1)
+	var cell_h: int = maxi(floori(float(size.y) / rows), 1)
 	var scale_factor: Vector2 = source.global_scale
 	
 	# Imagem usada para ignorar recortes totalmente transparentes (quando disponível).
