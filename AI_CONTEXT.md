@@ -9,6 +9,8 @@
   - **Detalhamento de PRs (Pull Requests):** Cada card/feature deve ter um modelo detalhado de PR registrado na documentação, demonstrando o fluxo profissional de Git e engenharia.
 - **Developer Profile:** Solo developer (16yo), base técnica sólida em lógica, Java (mentalidade POO rigorosa) e Python/SQL. Prefere tipagem estática rigorosa e fronteiras arquiteturais limpas.
 - **Art Assets:** Foco inicial em mecânicas e arquitetura, utilizando assets 2D modulares (Tiny Swords / placeholders limpos) com física e apresentação visual impecáveis.
+- **Arte & Game Feel (Juice) por Código:** A arte do projeto e todo o game feel/juice (flash de dano, knockback, screen shake, partículas, hit-stop, tweens, sombras, etc.) serão feitos **por código** (GDScript: `Tween`, `modulate`, shaders, `_draw()`, `GPUParticles2D` configurado via script), evitando depender de assets/animações manuais. Prefira parâmetros `@export` para ajuste fino.
+- **Padrão de Destruição (vale para TODO o projeto):** quando qualquer objeto é destruído, seu sprite **se quebra em pedaços que são arremessados pela tela**. Se o objeto for um **ser vivo**, **pixels vermelhos (sangue)** voam junto com os fragmentos. Implementado em `scripts/destruction_effect.gd` (`DestructionEffect.spawn(sprite, parent, is_living, hit_direction)`); toda entidade destruível deve reutilizar esse efeito (flag `is_living` define o sangue) em vez de criar efeitos próprios.
 
 ---
 
@@ -34,6 +36,7 @@
 ## 4. Engineering Rules for AI Assistance
 - **No Scope Creep:** Keep solutions minimal, performant, and directly tied to the active Sprint card.
 - **Godot 4 Syntax Only:** Never use Godot 3 legacy code (`is_on_floor()` instead of old casting patterns, correct vector math, modern signal syntax `signal custom_signal`).
+- **Teste Obrigatório Antes do Commit:** Toda implementação concluída DEVE ter um arquivo de teste correspondente em `/tests` (suíte headless) criado e executado com sucesso **antes** de commitar. Sem arquivo de teste, não há commit. O teste entra no mesmo commit/PR da feature e deve ser citado no "Como Testar" da PR.
 
 ---
 
@@ -138,8 +141,9 @@ Ao finalizar um card ou conjunto de cards que formam uma entrega, o Alfred deve 
   - *Tempo:* Quinta, 14:20 – 15:30 (1h 10m)
 
 ### **Sexta-feira (16/10)**
-- **Card 9:** `[Dev] #19 - Condição de Destruição do Alvo (Queue_Free)`
+- **Card 9:** `[Dev] #19 - Condição de Destruição do Alvo (Queue_Free)` - **[CONCLUÍDO]**
   - *Critérios:* Lógica de morte no script do Dummy que verifica quando `hp <= 0` e executa a remoção segura da cena (`queue_free()`).
+  - *Padrão de Destruição (todo o projeto):* o sprite se quebra em pedaços arremessados pela tela; seres vivos soltam também pixels vermelhos (sangue). Implementado em `DestructionEffect` (`scripts/destruction_effect.gd`), testado em `tests/test_dummy_destruction.gd`.
   - *Tempo:* Sexta, 13:20 – 14:20 (1h)
 - **Card 10:** `[Dev] #20 - Revisão, Depuração e Fechamento da Sprint 2`
   - *Critérios:* Teste integrado de combate (aproximar, bater, causar dano, verificar knockback e destruição do alvo); commit final limpo no Git.
