@@ -134,6 +134,6 @@ Ao finalizar um card ou conjunto de cards que formam uma entrega, o Alfred deve 
   - *Critérios:* Lógica de morte no script do Dummy que verifica quando `hp <= 0` e executa a remoção segura da cena (`queue_free()`).
   - *Padrão de Destruição (todo o projeto):* o sprite se quebra em pedaços arremessados pela tela; seres vivos soltam também pixels vermelhos (sangue). Implementado em `DestructionEffect` (`scripts/destruction_effect.gd`), testado em `tests/test_dummy_destruction.gd`.
   - *Estimativa:* 1h
-- **Card 10:** `[Dev] #20 - Revisão, Depuração e Fechamento da Sprint 2`
-  - *Critérios:* Teste integrado de combate (aproximar, bater, causar dano, verificar knockback e destruição do alvo); commit final limpo no Git.
+- **Card 10:** `[Dev] #20 - Revisão, Depuração e Fechamento da Sprint 2` - **[CONCLUÍDO]**
+  - *Critérios:* Teste integrado de combate (aproximar, bater, causar dano, verificar knockback e destruição do alvo); commit final limpo no Git. Testado e validado em `tests/playtest_sprint2.gd`.
   - *Estimativa:* 1h 10m
