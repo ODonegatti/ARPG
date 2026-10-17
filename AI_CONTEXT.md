@@ -132,8 +132,9 @@ Ao finalizar um card ou conjunto de cards que formam uma entrega, o Alfred deve 
 - **Card 7:** `[Dev] #17 - Sistema de Tomada de Dano e Vida (HP Component)` - **[CONCLUÍDO]**
   - *Critérios:* Variável de vida (`hp`) encapsulada no script do Dummy; criação da função `receber_dano(valor)` conectada ao sinal `area_entered` da Hurtbox.
   - *Tempo:* Quinta, 13:20 – 14:20 (1h)
-- **Card 8:** `[Dev] #18 - Feedback Visual de Dano (Knockback Simples & Flash)`
+- **Card 8:** `[Dev] #18 - Feedback Visual de Dano (Knockback Simples & Flash)` - **[CONCLUÍDO]**
   - *Critérios:* Pequeno impulso físico (`move_and_slide` com vetor oposto) no Dummy ao sofrer dano e efeito visual básico (piscar o sprite em branco ou vermelho).
+  - *Nota de Arquitetura (futuro):* O knockback **dependerá do tipo de ataque do player** (leve, pesado, combo, habilidade). Hoje usa só `Hitbox.knockback_force`; o cálculo está isolado em `Dummy._calcular_knockback(hitbox)`, ponto único onde o tipo de ataque (ex: `Hitbox.attack_type`) será integrado.
   - *Tempo:* Quinta, 14:20 – 15:30 (1h 10m)
 
 ### **Sexta-feira (16/10)**
