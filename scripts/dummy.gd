@@ -1,6 +1,12 @@
 class_name Dummy
 extends CharacterBody2D
 
+## AI Context Router:
+## - Role: Entidade alvo de treino com física de knockback, vida (hp) e gatilho de destruição
+## - Scene: res://scenes/entities/dummy.tscn
+## - Tests: res://tests/playtest_sprint2.gd, res://tests/test_hurtbox_dummy.gd, res://tests/test_dummy_destruction.gd
+## - Docs: docs/modules/dummy.md
+
 ## Entidade de treino e alvo de teste de combate (Dummy).
 ## Herda de CharacterBody2D para permitir resposta cinemática (knockback e desaceleração por atrito)
 ## e feedback visual de impacto via AnimationPlayer.

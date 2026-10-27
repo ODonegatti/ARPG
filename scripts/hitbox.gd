@@ -1,6 +1,12 @@
 class_name Hitbox
 extends Area2D
 
+## AI Context Router:
+## - Role: Componente ofensivo de colisão (Layer 4) que transfere dano e knockback
+## - Scene: res://scenes/entities/player.tscn (nó Hitbox dentro de HitboxPivot)
+## - Tests: res://tests/test_hitbox_structure.gd, res://tests/test_hitbox_sync.gd
+## - Docs: docs/modules/player.md
+
 ## Componente de Hitbox para detecção de acerto e aplicação de dano em alvos (Hurtbox).
 ## Pertence à camada PlayerHitbox (Layer 4, valor 8) e detecta a camada Enemies (Layer 3, valor 4).
 

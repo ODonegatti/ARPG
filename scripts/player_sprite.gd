@@ -1,6 +1,12 @@
 class_name PlayerSprite
 extends Sprite2D
 
+## AI Context Router:
+## - Role: Gerenciador visual de spritesheets e direções do jogador
+## - Scene: res://scenes/entities/player.tscn (nó filho Sprite2D)
+## - Tests: res://tests/test_attack_animation.gd, res://tests/playtest_sprint1.gd
+## - Docs: docs/modules/player.md
+
 ## Componente visual do jogador responsável pelo chaveamento dinâmico de spritesheets
 ## direcionais (Down, Up, Side) e espelhamento horizontal (flip_h).
 

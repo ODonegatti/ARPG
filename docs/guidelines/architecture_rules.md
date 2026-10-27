@@ -88,3 +88,34 @@ Quando qualquer entidade física for destruída no jogo:
 /docs         # Documentações complementares, guias e especificações de sprints
 /moduloX.md   # Módulos didáticos do curso correspondentes a cada Sprint
 ```
+
+---
+
+## 6. Padrão Obrigatório de Roteamento de Contexto para IA (AI Context Routing Pattern)
+
+> **Regra Arquitetural Inegociável para Qualquer Implementação:**
+> Todo novo card, script, cena, componente ou teste adicionado ao projeto **DEVE** incorporar o protocolo de roteamento de contexto para IA. O objetivo é manter a janela de contexto mínima, indexada e diretamente navegável por qualquer agente sem varreduras cegas de código.
+
+### Checklist Obrigatório para Qualquer Implementação:
+1. **Cabeçalho de Roteamento nos Scripts (`scripts/*.gd`):**
+   Todo script criado ou significativamente alterado deve ter no topo o bloco:
+   ```gdscript
+   ## AI Context Router:
+   ## - Role: [Papel e responsabilidade do script]
+   ## - Scene: [Cena .tscn vinculada ou "Instanciado via código"]
+   ## - Tests: [Arquivos de teste headless que cobrem este script]
+   ## - Docs: [Link para o documento técnico em docs/modules/]
+   ```
+2. **Atualização do Roteador Local de Scripts (`scripts/README.md`):**
+   Cadastre o novo script na tabela com sua camada, cena, testes e documentação correspondente.
+3. **Atualização do Roteador Local de Cenas (`scenes/README.md`):**
+   Se uma nova cena for criada ou modificada, adicione-a à tabela de cenas com suas camadas de colisão físicas (Layers/Masks) e scripts vinculados.
+4. **Atualização do Roteador Local de Testes (`tests/README.md`):**
+   Todo novo teste deve ser registrado na tabela com o card que valida e instruções de execução headless.
+5. **Documentação Técnica em `docs/modules/`:**
+   Entidades e subsistemas relevantes devem ter seu arquivo `.md` em `docs/modules/` e constar no índice `docs/modules/index.md`.
+6. **Atualização da Sprint Ativa (`docs/sprints/sprint_X.md`):**
+   Marque o status do card e vincule seus artefatos.
+7. **Atualização do Roteador Central (`AI_CONTEXT.md`):**
+   Caso a entrega introduza um novo subsistema ou altere o status da sprint, atualize o índice mestre.
+

@@ -1,6 +1,12 @@
 class_name Player
 extends CharacterBody2D
 
+## AI Context Router:
+## - Role: Controlador principal do jogador (física, inputs e combate)
+## - Scene: res://scenes/entities/player.tscn
+## - Tests: res://tests/playtest_sprint1.gd, res://tests/playtest_sprint2.gd, res://tests/test_player_attack_prep.gd
+## - Docs: docs/modules/player.md
+
 ## Controlador do jogador (CharacterBody2D) em perspectiva Top-Down 2D.
 ## Aplica o princípio de responsabilidade única (SRP) separando a captação de input,
 ## o cálculo da física e a atualização do estado visual e animação.

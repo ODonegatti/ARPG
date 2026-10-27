@@ -27,6 +27,7 @@ O objetivo primordial deste projeto é funcionar como um **curso e tutorial prá
 Sempre que organizar tarefas ou detalhar o backlog do projeto, utilize a seguinte estrutura padronizada:
 - **Título com Tag de Épico:** Ex: `[Dev] #X - Título da Tarefa`
 - **Critérios de Aceitação (Definition of Done):** Requisitos técnicos e funcionais verificáveis.
+  - *Item Obrigatório em todo card:* Atualização de roteamento de contexto da IA (cabeçalho de script, registro em `scripts/README.md`, `scenes/README.md` ou `tests/README.md` e teste headless correspondente).
 - **Estimativa de Tempo:** Previsão em horas/minutos para conclusão da tarefa.
 
 ---

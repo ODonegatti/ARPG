@@ -1,6 +1,12 @@
 class_name Hurtbox
 extends Area2D
 
+## AI Context Router:
+## - Role: Componente receptor de colisão (Layer 3) que detecta Hitboxes e emite hit_received
+## - Scene: res://scenes/entities/dummy.tscn (nó Hurtbox)
+## - Tests: res://tests/test_hurtbox_dummy.gd
+## - Docs: docs/modules/dummy.md
+
 ## Componente de Hurtbox para detecção de recebimento de golpes e vulnerabilidade a dano.
 ## Pertence à camada Enemies (Layer 3, valor 4) e escuta a camada PlayerHitbox (Layer 4, valor 8).
 

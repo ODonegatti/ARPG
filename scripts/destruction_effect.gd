@@ -1,6 +1,12 @@
 class_name DestructionEffect
 extends Node2D
 
+## AI Context Router:
+## - Role: Efeito procedural global de estilhaçamento de sprite e partículas de sangue
+## - Scene: Instanciado dinamicamente via código em qualquer nó pai da cena
+## - Tests: res://tests/test_dummy_destruction.gd, res://tests/playtest_sprint2.gd
+## - Docs: docs/guidelines/architecture_rules.md
+
 ## Efeito padrão de destruição do projeto (game feel por código).
 ## Quebra o sprite de um objeto em fragmentos que são arremessados pela tela.
 ## Se o objeto for um ser vivo, pixels vermelhos (sangue) voam junto.
